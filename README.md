@@ -1,4 +1,4 @@
-### Hi there 👋
+<img src="resource/3.jpg"> 
 
 <!--
 **arching3/arching3** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
