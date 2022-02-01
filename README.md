@@ -2,10 +2,9 @@
 <img src="resource/3.jpg">
 </p>
 
-<p align="center">
 > _I think; therfore i am._
 -René Descartes
-</p>
+
 
 <hr>
 
