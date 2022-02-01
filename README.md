@@ -1,5 +1,17 @@
-<div style="text-align:center;">
-<img src="resource/3.jpg"> </div>
+<p align="center">
+<img src="resource/3.jpg">
+</p>
+
+<p align="center">
+> _I think; therfore i am._
+-René Descartes
+</p>
+
+<hr>
+<p aign="center">
+## 공사중 ....!
+</p>
+
 
 <!--
 **arching3/arching3** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
