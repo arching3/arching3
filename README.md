@@ -8,8 +8,9 @@
 </p>
 
 <hr>
-## 공사중 ....!
-
+<p align="center">
+<h1> 공사중 ....! </h1>
+</p>
 
 <!--
 **arching3/arching3** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
