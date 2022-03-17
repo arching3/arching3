@@ -1,6 +1,3 @@
-<p align="center">
-<img src="resource/3.jpg">
-</p>
 
 > _I think; therfore i am._
 -René Descartes
