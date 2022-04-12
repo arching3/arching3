@@ -1,8 +1,3 @@
-
-> _I think; therfore i am._
--René Descartes
-
-
 <hr>
 
 
