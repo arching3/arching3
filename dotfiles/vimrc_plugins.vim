@@ -47,22 +47,38 @@ inoremap <tab> <c-r>=InsertTabWrapper()<cr>
 set rtp+=~/.vim/bundle/Vundle.vim
 if isdirectory(expand('~/.vim/bundle/Vundle.vim'))
   call vundle#begin()
+
+  " plugin manager
   Plugin 'VundleVim/Vundle.vim'
+
+  " ui and syntax
+  Plugin 'sheerun/vim-polyglot'
+
+  " git workflow
   Plugin 'tpope/vim-fugitive'
+  Plugin 'airblade/vim-gitgutter'
+
+  " editing ergonomics
   Plugin 'tpope/vim-surround'
   Plugin 'tpope/vim-commentary'
+  Plugin 'michaeljsmith/vim-indent-object'
+  Plugin 'junegunn/vim-easy-align'
+
+  " file and symbol navigation
+  Plugin 'preservim/nerdtree'
+  Plugin 'Xuyuanp/nerdtree-git-plugin'
   Plugin 'junegunn/fzf'
   Plugin 'junegunn/fzf.vim'
-  Plugin 'preservim/nerdtree'
-  Plugin 'airblade/vim-gitgutter'
-  Plugin 'dense-analysis/ale'
-  Plugin 'sheerun/vim-polyglot'
-  Plugin 'rust-lang/rust.vim'
-  call vundle#end()
 
-  let g:everforest_background = 'soft'
-  let g:everforest_better_performance = 1
-  silent! colorscheme everforest
+  " lint/format
+  Plugin 'dense-analysis/ale'
+
+  " language focused additions
+  Plugin 'octol/vim-cpp-enhanced-highlight'
+  Plugin 'vim-python/python-syntax'
+  Plugin 'rust-lang/rust.vim'
+
+  call vundle#end()
 endif
 filetype plugin indent on
 
@@ -72,6 +88,11 @@ nnoremap <leader>g :GFiles?<CR>
 nnoremap <leader>b :Buffers<CR>
 
 let g:ale_fix_on_save = 1
+let g:ale_lint_on_text_changed = 'always'
+let g:ale_lint_on_insert_leave = 1
+let g:ale_echo_cursor = 1
+let g:ale_sign_error = 'E'
+let g:ale_sign_warning = 'W'
 let g:ale_linters = {
 \  'c': ['clangd'],
 \  'cpp': ['clangd'],

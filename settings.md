@@ -9,15 +9,19 @@
 
 ## 추천 Vim 플러그인
 - `VundleVim/Vundle.vim`: 플러그인 매니저 (bundle 기반)
-- `sainnhe/everforest`: 현재 사용 중인 색상 테마 유지
+- `sheerun/vim-polyglot`: 언어별 문법/indent 강화
 - `tpope/vim-fugitive`: Git 통합
+- `airblade/vim-gitgutter`: Git 변경 라인 표시
 - `tpope/vim-surround`: 괄호/따옴표 편집
 - `tpope/vim-commentary`: 주석 토글
-- `junegunn/fzf`, `junegunn/fzf.vim`: 파일/심볼 빠른 검색
+- `michaeljsmith/vim-indent-object`: indent 단위 text-object(`ai`, `ii`) 제공
+- `junegunn/vim-easy-align`: 텍스트 정렬(`:EasyAlign`) 지원
 - `preservim/nerdtree`: 파일 트리
-- `airblade/vim-gitgutter`: Git 변경 라인 표시
-- `dense-analysis/ale`: lint/format 통합
-- `sheerun/vim-polyglot`: 언어별 문법/indent 강화
+- `Xuyuanp/nerdtree-git-plugin`: NERDTree에서 Git 상태 표시
+- `junegunn/fzf`, `junegunn/fzf.vim`: 파일/심볼 빠른 검색
+- `dense-analysis/ale`: 편집 중 실시간 에러/경고 표시 + lint/format
+- `octol/vim-cpp-enhanced-highlight`: C/C++ 하이라이트 보강
+- `vim-python/python-syntax`: Python 문법 하이라이트 보강
 - `rust-lang/rust.vim`: Rust 지원 보강
 
 ## 외부 도구 권장 (ALE와 함께 사용)

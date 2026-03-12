@@ -163,6 +163,14 @@ run_plugin_install() {
 
     log "running PluginInstall"
     vim +PluginInstall +qall
+
+    local fzf_installer="$HOME/.vim/bundle/fzf/install"
+    if [ -x "$fzf_installer" ]; then
+        log "installing fzf binary"
+        "$fzf_installer" --all
+    else
+        log "fzf installer not found; skipping fzf binary install"
+    fi
 }
 
 main() {
