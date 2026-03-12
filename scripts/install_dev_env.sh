@@ -3,18 +3,18 @@ set -euo pipefail
 
 DRY_RUN=0
 AUTO_YES=0
-SKIP_PLUG_INSTALL=0
-SKIP_VIM_PLUG=0
+SKIP_PLUGIN_INSTALL=0
+SKIP_VUNDLE=0
 
 for arg in "$@"; do
     case "$arg" in
         --dry-run) DRY_RUN=1 ;;
         --yes|-y) AUTO_YES=1 ;;
-        --skip-plug-install) SKIP_PLUG_INSTALL=1 ;;
-        --skip-vim-plug) SKIP_VIM_PLUG=1 ;;
+        --skip-plugin-install|--skip-plug-install) SKIP_PLUGIN_INSTALL=1 ;;
+        --skip-vundle|--skip-vim-plug) SKIP_VUNDLE=1 ;;
         *)
             echo "Unknown option: $arg" >&2
-            echo "Usage: $0 [--dry-run] [--yes] [--skip-vim-plug] [--skip-plug-install]" >&2
+            echo "Usage: $0 [--dry-run] [--yes] [--skip-vundle] [--skip-plugin-install]" >&2
             exit 1
             ;;
     esac
@@ -95,29 +95,22 @@ upsert_block_from_file() {
     mv "$tmp" "$target_file"
 }
 
-install_vim_plug() {
-    local plug_path="$HOME/.vim/autoload/plug.vim"
-    if [ -f "$plug_path" ]; then
-        log "vim-plug already installed: $plug_path"
+install_vundle() {
+    local vundle_path="$HOME/.vim/bundle/Vundle.vim"
+    if [ -d "$vundle_path" ]; then
+        log "Vundle already installed: $vundle_path"
         return
     fi
 
     if [ "$DRY_RUN" -eq 1 ]; then
-        log "dry-run: would install vim-plug into $plug_path"
+        log "dry-run: would install Vundle into $vundle_path"
         return
     fi
 
-    log "installing vim-plug"
-    if command -v curl >/dev/null 2>&1; then
-        curl -fLo "$plug_path" --create-dirs \
-            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    elif command -v wget >/dev/null 2>&1; then
-        mkdir -p "$(dirname "$plug_path")"
-        wget -O "$plug_path" \
-            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    else
-        fail "curl or wget is required to install vim-plug"
-    fi
+    command -v git >/dev/null 2>&1 || fail "git is required to install Vundle"
+    mkdir -p "$HOME/.vim/bundle"
+    log "installing Vundle"
+    git clone https://github.com/VundleVim/Vundle.vim.git "$vundle_path"
 }
 
 apply_changes() {
@@ -153,9 +146,9 @@ EOF
     rm -f "$bash_block_file" "$vim_block_file"
 }
 
-run_plug_install() {
-    if [ "$SKIP_PLUG_INSTALL" -eq 1 ]; then
-        log "skipping PlugInstall as requested"
+run_plugin_install() {
+    if [ "$SKIP_PLUGIN_INSTALL" -eq 1 ]; then
+        log "skipping PluginInstall as requested"
         return
     fi
 
@@ -164,12 +157,12 @@ run_plug_install() {
     fi
 
     if [ "$DRY_RUN" -eq 1 ]; then
-        log "dry-run: would run vim +PlugInstall +qall"
+        log "dry-run: would run vim +PluginInstall +qall"
         return
     fi
 
-    log "running PlugInstall"
-    vim +PlugInstall +qall
+    log "running PluginInstall"
+    vim +PluginInstall +qall
 }
 
 main() {
@@ -187,12 +180,12 @@ main() {
     fi
 
     apply_changes
-    if [ "$SKIP_VIM_PLUG" -eq 1 ]; then
-        log "skipping vim-plug bootstrap as requested"
+    if [ "$SKIP_VUNDLE" -eq 1 ]; then
+        log "skipping Vundle bootstrap as requested"
     else
-        install_vim_plug
+        install_vundle
     fi
-    run_plug_install
+    run_plugin_install
 
     log "done"
     log "reload shell with: source ~/.bashrc"

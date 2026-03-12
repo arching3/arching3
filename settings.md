@@ -8,7 +8,7 @@
 - C/C++, Python, Rust 개발에 필요한 최소/실용 플러그인 구성
 
 ## 추천 Vim 플러그인
-- `junegunn/vim-plug`: 플러그인 매니저
+- `VundleVim/Vundle.vim`: 플러그인 매니저 (bundle 기반)
 - `sainnhe/everforest`: 현재 사용 중인 색상 테마 유지
 - `tpope/vim-fugitive`: Git 통합
 - `tpope/vim-surround`: 괄호/따옴표 편집
@@ -40,8 +40,8 @@
 설치 스크립트는 다음을 수행합니다.
 1. `~/.bashrc`, `~/.vimrc` 백업 생성
 2. 두 파일에 `arching3` 관리 블록을 삽입/갱신 (중복 없이 재실행 가능)
-3. `~/.vim/autoload/plug.vim` 자동 설치 (없을 때만)
-4. `vim +PlugInstall +qall` 실행
+3. `~/.vim/bundle/Vundle.vim` 자동 설치 (없을 때만)
+4. `vim +PluginInstall +qall` 실행
 
 ## 파일 구성
 - `dotfiles/bashrc_addon.sh`: Bash 추가 설정 본문
@@ -63,11 +63,11 @@ cd /home/arching/bash_/arching3
 ./scripts/install_dev_env.sh --yes
 ```
 
-병합만 먼저(플러그인 다운로드/설치 제외):
+병합만 먼저(플러그인 매니저/플러그인 설치 제외):
 
 ```bash
 cd /home/arching/bash_/arching3
-./scripts/install_dev_env.sh --yes --skip-vim-plug --skip-plug-install
+./scripts/install_dev_env.sh --yes --skip-vundle --skip-plugin-install
 ```
 
 적용 후 반영:

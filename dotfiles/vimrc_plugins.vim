@@ -1,9 +1,9 @@
 if has('syntax')
   syntax on
 endif
-filetype plugin indent on
 
 set nocompatible
+filetype off
 set number
 set hlsearch
 set incsearch
@@ -44,25 +44,27 @@ endfunction
 
 inoremap <tab> <c-r>=InsertTabWrapper()<cr>
 
-if !empty(glob('~/.vim/autoload/plug.vim'))
-  call plug#begin('~/.vim/plugged')
-  Plug 'sainnhe/everforest'
-  Plug 'tpope/vim-fugitive'
-  Plug 'tpope/vim-surround'
-  Plug 'tpope/vim-commentary'
-  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-  Plug 'junegunn/fzf.vim'
-  Plug 'preservim/nerdtree'
-  Plug 'airblade/vim-gitgutter'
-  Plug 'dense-analysis/ale'
-  Plug 'sheerun/vim-polyglot'
-  Plug 'rust-lang/rust.vim'
-  call plug#end()
+set rtp+=~/.vim/bundle/Vundle.vim
+if isdirectory(expand('~/.vim/bundle/Vundle.vim'))
+  call vundle#begin()
+  Plugin 'VundleVim/Vundle.vim'
+  Plugin 'tpope/vim-fugitive'
+  Plugin 'tpope/vim-surround'
+  Plugin 'tpope/vim-commentary'
+  Plugin 'junegunn/fzf'
+  Plugin 'junegunn/fzf.vim'
+  Plugin 'preservim/nerdtree'
+  Plugin 'airblade/vim-gitgutter'
+  Plugin 'dense-analysis/ale'
+  Plugin 'sheerun/vim-polyglot'
+  Plugin 'rust-lang/rust.vim'
+  call vundle#end()
 
   let g:everforest_background = 'soft'
   let g:everforest_better_performance = 1
   silent! colorscheme everforest
 endif
+filetype plugin indent on
 
 nnoremap <leader>n :NERDTreeToggle<CR>
 nnoremap <leader>f :Files<CR>
