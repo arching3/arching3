@@ -64,14 +64,9 @@ if isdirectory(expand('~/.vim/bundle/Vundle.vim'))
   Plugin 'michaeljsmith/vim-indent-object'
   Plugin 'junegunn/vim-easy-align'
 
-  " file and symbol navigation
+  " file tree
   Plugin 'preservim/nerdtree'
   Plugin 'Xuyuanp/nerdtree-git-plugin'
-  Plugin 'junegunn/fzf'
-  Plugin 'junegunn/fzf.vim'
-
-  " lint/format
-  Plugin 'dense-analysis/ale'
 
   " language focused additions
   Plugin 'octol/vim-cpp-enhanced-highlight'
@@ -88,26 +83,3 @@ if isdirectory(expand('~/.vim/pack/colors/start/everforest'))
 endif
 
 nnoremap <leader>n :NERDTreeToggle<CR>
-nnoremap <leader>f :Files<CR>
-nnoremap <leader>g :GFiles?<CR>
-nnoremap <leader>b :Buffers<CR>
-
-let g:ale_fix_on_save = 1
-let g:ale_lint_on_text_changed = 'always'
-let g:ale_lint_on_insert_leave = 1
-let g:ale_echo_cursor = 1
-let g:ale_sign_error = 'E'
-let g:ale_sign_warning = 'W'
-let g:ale_linters = {
-\  'c': ['clangd'],
-\  'cpp': ['clangd'],
-\  'python': ['pyright'],
-\  'rust': ['analyzer'],
-\}
-let g:ale_fixers = {
-\  '*': ['trim_whitespace', 'remove_trailing_lines'],
-\  'c': ['clang-format'],
-\  'cpp': ['clang-format'],
-\  'python': ['black'],
-\  'rust': ['rustfmt'],
-\}

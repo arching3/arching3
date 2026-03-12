@@ -18,8 +18,6 @@
 - `junegunn/vim-easy-align`: 텍스트 정렬(`:EasyAlign`) 지원
 - `preservim/nerdtree`: 파일 트리
 - `Xuyuanp/nerdtree-git-plugin`: NERDTree에서 Git 상태 표시
-- `junegunn/fzf`, `junegunn/fzf.vim`: 파일/심볼 빠른 검색
-- `dense-analysis/ale`: 편집 중 실시간 에러/경고 표시 + lint/format
 - `octol/vim-cpp-enhanced-highlight`: C/C++ 하이라이트 보강
 - `vim-python/python-syntax`: Python 문법 하이라이트 보강
 - `rust-lang/rust.vim`: Rust 지원 보강
@@ -29,7 +27,7 @@
 - 설치 경로: `~/.vim/pack/colors/start/everforest`
 - 원격 저장소: `https://github.com/sainnhe/everforest.git`
 
-## 외부 도구 권장 (ALE와 함께 사용)
+## 언어 도구 권장
 - C/C++: `gcc`, `g++`, `gdb`, `make`/`cmake` (선택: `clangd`, `clang-format`)
 - Python: `black` (선택적으로 `ruff`)
 - Rust: `rust-analyzer`, `rustfmt`, `clippy`

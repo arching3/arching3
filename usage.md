@@ -61,30 +61,17 @@
 - NERDTree 안에서 Git 상태 아이콘을 표시합니다.
 - 별도 명령 없이 NERDTree와 함께 동작합니다.
 
-## 11) fzf / fzf.vim (`junegunn/fzf`, `junegunn/fzf.vim`)
-- 파일 검색: `<leader>f` (`:Files`)
-- Git tracked 파일 검색: `<leader>g` (`:GFiles?`)
-- 버퍼 목록: `<leader>b` (`:Buffers`)
-- 전체 검색(옵션): `:Rg {pattern}` (`rg` 설치 시)
-
-## 12) ALE (`dense-analysis/ale`)
-- 현재 설정: 입력 중/Insert 종료 시 실시간 lint, 저장 시 자동 fix.
-- 에러/경고 표시는 sign column(`E`, `W`)에 출력.
-- 상태 확인: `:ALEInfo`
-- 현재 진단 상세: `:ALEDetail`
-- 수동 fix 실행: `:ALEFix`
-
-## 13) C/C++ highlight (`octol/vim-cpp-enhanced-highlight`)
+## 11) C/C++ highlight (`octol/vim-cpp-enhanced-highlight`)
 - C/C++ 문법 하이라이트를 강화합니다.
 - 별도 명령 없이 `.c/.cpp/.h/.hpp`에서 자동 적용됩니다.
 
-## 14) Python syntax (`vim-python/python-syntax`)
+## 12) Python syntax (`vim-python/python-syntax`)
 - Python 문법 하이라이트를 강화합니다.
 - 별도 명령 없이 `.py`에서 자동 적용됩니다.
 
-## 15) rust.vim (`rust-lang/rust.vim`)
+## 13) rust.vim (`rust-lang/rust.vim`)
 - Rust filetype 지원을 제공합니다.
-- 현재 설정에선 저장 시 ALE가 `rustfmt` fixer를 실행합니다.
+- `rustfmt`/`clippy`는 외부 도구로 수동 실행하거나 빌드 워크플로우에 연결해 사용합니다.
 
 ## Colorscheme
 - colorscheme은 Vundle이 아니라 GitHub clone으로 설치합니다.
