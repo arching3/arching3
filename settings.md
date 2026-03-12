@@ -24,6 +24,11 @@
 - `vim-python/python-syntax`: Python 문법 하이라이트 보강
 - `rust-lang/rust.vim`: Rust 지원 보강
 
+## Colorscheme (GitHub 직접 설치)
+- `everforest`를 Vundle이 아닌 GitHub clone으로 설치/적용
+- 설치 경로: `~/.vim/pack/colors/start/everforest`
+- 원격 저장소: `https://github.com/sainnhe/everforest.git`
+
 ## 외부 도구 권장 (ALE와 함께 사용)
 - C/C++: `gcc`, `g++`, `gdb`, `make`/`cmake` (선택: `clangd`, `clang-format`)
 - Python: `black` (선택적으로 `ruff`)
@@ -45,7 +50,8 @@
 1. `~/.bashrc`, `~/.vimrc` 백업 생성
 2. 두 파일에 `arching3` 관리 블록을 삽입/갱신 (중복 없이 재실행 가능)
 3. `~/.vim/bundle/Vundle.vim` 자동 설치 (없을 때만)
-4. `vim +PluginInstall +qall` 실행
+4. GitHub에서 `everforest` colorscheme clone/업데이트
+5. `vim +PluginInstall +qall` 실행
 
 ## 파일 구성
 - `dotfiles/bashrc_addon.sh`: Bash 추가 설정 본문
@@ -56,21 +62,21 @@
 먼저 미리보기:
 
 ```bash
-cd /home/arching/bash_/arching3
+cd /home/arching/arching3
 ./scripts/install_dev_env.sh --dry-run
 ```
 
 적용:
 
 ```bash
-cd /home/arching/bash_/arching3
+cd /home/arching/arching3
 ./scripts/install_dev_env.sh --yes
 ```
 
 병합만 먼저(플러그인 매니저/플러그인 설치 제외):
 
 ```bash
-cd /home/arching/bash_/arching3
+cd /home/arching/arching3
 ./scripts/install_dev_env.sh --yes --skip-vundle --skip-plugin-install
 ```
 

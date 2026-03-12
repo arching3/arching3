@@ -82,6 +82,11 @@ if isdirectory(expand('~/.vim/bundle/Vundle.vim'))
 endif
 filetype plugin indent on
 
+" colorscheme is installed from GitHub directly (not via Vundle)
+if isdirectory(expand('~/.vim/pack/colors/start/everforest'))
+  silent! colorscheme everforest
+endif
+
 nnoremap <leader>n :NERDTreeToggle<CR>
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>g :GFiles?<CR>

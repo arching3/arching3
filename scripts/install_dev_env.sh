@@ -29,6 +29,10 @@ BASH_ADDON="$REPO_ROOT/dotfiles/bashrc_addon.sh"
 VIM_PLUGIN_CONFIG="$REPO_ROOT/dotfiles/vimrc_plugins.vim"
 BACKUP_DIR="$HOME/.config/arching3-env-backup"
 
+COLORSCHEME_NAME="everforest"
+COLORSCHEME_REPO_URL="https://github.com/sainnhe/everforest.git"
+COLORSCHEME_DIR="$HOME/.vim/pack/colors/start/$COLORSCHEME_NAME"
+
 BASH_BEGIN="# >>> arching3-dev-env >>>"
 BASH_END="# <<< arching3-dev-env <<<"
 VIM_BEGIN="\" >>> arching3-dev-env >>>"
@@ -113,6 +117,35 @@ install_vundle() {
     git clone https://github.com/VundleVim/Vundle.vim.git "$vundle_path"
 }
 
+install_colorscheme_from_github() {
+    if [ -d "$COLORSCHEME_DIR/.git" ]; then
+        if [ "$DRY_RUN" -eq 1 ]; then
+            log "dry-run: would update colorscheme $COLORSCHEME_NAME in $COLORSCHEME_DIR"
+            return
+        fi
+
+        command -v git >/dev/null 2>&1 || fail "git is required to update colorscheme"
+        log "updating colorscheme $COLORSCHEME_NAME"
+        git -C "$COLORSCHEME_DIR" pull --ff-only || log "colorscheme update skipped (pull failed)"
+        return
+    fi
+
+    if [ -d "$COLORSCHEME_DIR" ]; then
+        log "colorscheme directory exists (non-git), skipping clone: $COLORSCHEME_DIR"
+        return
+    fi
+
+    if [ "$DRY_RUN" -eq 1 ]; then
+        log "dry-run: would clone colorscheme $COLORSCHEME_NAME from $COLORSCHEME_REPO_URL"
+        return
+    fi
+
+    command -v git >/dev/null 2>&1 || fail "git is required to install colorscheme"
+    mkdir -p "$(dirname "$COLORSCHEME_DIR")"
+    log "cloning colorscheme $COLORSCHEME_NAME from GitHub"
+    git clone "$COLORSCHEME_REPO_URL" "$COLORSCHEME_DIR"
+}
+
 apply_changes() {
     require_file "$BASH_ADDON"
     require_file "$VIM_PLUGIN_CONFIG"
@@ -121,17 +154,17 @@ apply_changes() {
     bash_block_file="$(mktemp)"
     vim_block_file="$(mktemp)"
 
-    cat > "$bash_block_file" <<EOF
+    cat > "$bash_block_file" <<EOF2
 if [ -f "$BASH_ADDON" ]; then
     . "$BASH_ADDON"
 fi
-EOF
+EOF2
 
-    cat > "$vim_block_file" <<EOF
+    cat > "$vim_block_file" <<EOF2
 if filereadable('$VIM_PLUGIN_CONFIG')
   execute 'source ' . fnameescape('$VIM_PLUGIN_CONFIG')
 endif
-EOF
+EOF2
 
     if [ "$DRY_RUN" -eq 1 ]; then
         log "dry-run: would update $BASHRC and $VIMRC with managed blocks"
@@ -193,6 +226,7 @@ main() {
     else
         install_vundle
     fi
+    install_colorscheme_from_github
     run_plugin_install
 
     log "done"
