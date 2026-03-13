@@ -44,7 +44,7 @@ alias cf='cargo fmt'
 alias cl='cargo clippy --all-targets --all-features'
 
 alias gccw='x86_64-w64-mingw32-gcc'
-alias gxxw='x84_64-w64-mingw32-g++'
+alias gxxw='x86_64-w64-mingw32-g++'
 
 mkcd() {
     mkdir -p "$1" && cd "$1"
