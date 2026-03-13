@@ -28,6 +28,9 @@ VIMRC="$HOME/.vimrc"
 BASH_ADDON="$REPO_ROOT/dotfiles/bashrc_addon.sh"
 VIM_PLUGIN_CONFIG="$REPO_ROOT/dotfiles/vimrc_plugins.vim"
 BACKUP_DIR="$HOME/.config/arching3-env-backup"
+MANAGED_DIR="$HOME/.config/arching3-dev-env"
+INSTALLED_BASH_ADDON="$MANAGED_DIR/bashrc_addon.sh"
+INSTALLED_VIM_PLUGIN_CONFIG="$MANAGED_DIR/vimrc_plugins.vim"
 
 COLORSCHEME_NAME="everforest"
 COLORSCHEME_REPO_URL="https://github.com/sainnhe/everforest.git"
@@ -63,6 +66,20 @@ backup_file() {
     else
         log "no existing file to backup: $file"
     fi
+}
+
+install_managed_files() {
+    mkdir -p "$MANAGED_DIR"
+
+    if [ "$DRY_RUN" -eq 1 ]; then
+        log "dry-run: would copy $BASH_ADDON to $INSTALLED_BASH_ADDON"
+        log "dry-run: would copy $VIM_PLUGIN_CONFIG to $INSTALLED_VIM_PLUGIN_CONFIG"
+        return
+    fi
+
+    cp "$BASH_ADDON" "$INSTALLED_BASH_ADDON"
+    cp "$VIM_PLUGIN_CONFIG" "$INSTALLED_VIM_PLUGIN_CONFIG"
+    log "managed files installed into $MANAGED_DIR"
 }
 
 strip_managed_block() {
@@ -155,22 +172,24 @@ apply_changes() {
     vim_block_file="$(mktemp)"
 
     cat > "$bash_block_file" <<EOF2
-if [ -f "$BASH_ADDON" ]; then
-    . "$BASH_ADDON"
+if [ -f "$INSTALLED_BASH_ADDON" ]; then
+    . "$INSTALLED_BASH_ADDON"
 fi
 EOF2
 
     cat > "$vim_block_file" <<EOF2
-if filereadable('$VIM_PLUGIN_CONFIG')
-  execute 'source ' . fnameescape('$VIM_PLUGIN_CONFIG')
+if filereadable('$INSTALLED_VIM_PLUGIN_CONFIG')
+  execute 'source ' . fnameescape('$INSTALLED_VIM_PLUGIN_CONFIG')
 endif
 EOF2
 
     if [ "$DRY_RUN" -eq 1 ]; then
+        install_managed_files
         log "dry-run: would update $BASHRC and $VIMRC with managed blocks"
     else
         backup_file "$BASHRC"
         backup_file "$VIMRC"
+        install_managed_files
         upsert_block_from_file "$BASHRC" "$BASH_BEGIN" "$BASH_END" "$bash_block_file"
         upsert_block_from_file "$VIMRC" "$VIM_BEGIN" "$VIM_END" "$vim_block_file"
         log "managed blocks updated"
@@ -202,6 +221,7 @@ main() {
     log "repo root: $REPO_ROOT"
     log "target bashrc: $BASHRC"
     log "target vimrc: $VIMRC"
+    log "managed files dir: $MANAGED_DIR"
 
     if [ "$AUTO_YES" -ne 1 ] && [ "$DRY_RUN" -ne 1 ]; then
         printf 'Apply managed settings to ~/.bashrc and ~/.vimrc? [y/N] '
@@ -223,6 +243,7 @@ main() {
 
     log "done"
     log "reload shell with: source ~/.bashrc"
+    log "the cloned repository can be removed after installation"
 }
 
 main "$@"
