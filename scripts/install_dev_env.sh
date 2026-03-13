@@ -28,14 +28,10 @@ VIMRC="$HOME/.vimrc"
 BASH_ADDON="$REPO_ROOT/dotfiles/bashrc_addon.sh"
 VIM_PLUGIN_CONFIG="$REPO_ROOT/dotfiles/vimrc_plugins.vim"
 BACKUP_DIR="$HOME/.config/arching3-env-backup"
-MANAGED_DIR="$HOME/.config/arching3-dev-env"
-INSTALLED_BASH_ADDON="$MANAGED_DIR/bashrc_addon.sh"
-INSTALLED_VIM_PLUGIN_CONFIG="$MANAGED_DIR/vimrc_plugins.vim"
 
 COLORSCHEME_NAME="everforest"
 COLORSCHEME_REPO_URL="https://github.com/sainnhe/everforest.git"
 COLORSCHEME_DIR="$HOME/.vim/pack/colors/start/$COLORSCHEME_NAME"
-
 BASH_BEGIN="# >>> arching3-dev-env >>>"
 BASH_END="# <<< arching3-dev-env <<<"
 VIM_BEGIN="\" >>> arching3-dev-env >>>"
@@ -68,20 +64,6 @@ backup_file() {
     fi
 }
 
-install_managed_files() {
-    mkdir -p "$MANAGED_DIR"
-
-    if [ "$DRY_RUN" -eq 1 ]; then
-        log "dry-run: would copy $BASH_ADDON to $INSTALLED_BASH_ADDON"
-        log "dry-run: would copy $VIM_PLUGIN_CONFIG to $INSTALLED_VIM_PLUGIN_CONFIG"
-        return
-    fi
-
-    cp "$BASH_ADDON" "$INSTALLED_BASH_ADDON"
-    cp "$VIM_PLUGIN_CONFIG" "$INSTALLED_VIM_PLUGIN_CONFIG"
-    log "managed files installed into $MANAGED_DIR"
-}
-
 strip_managed_block() {
     local file="$1"
     local begin="$2"
@@ -104,8 +86,14 @@ upsert_block_from_file() {
     local begin="$2"
     local end="$3"
     local content_file="$4"
-
+    local label="$5"
     local tmp
+
+    if [ "$DRY_RUN" -eq 1 ]; then
+        log "dry-run: would append/update $label block in $target_file from $content_file"
+        return
+    fi
+
     tmp="$(mktemp)"
     strip_managed_block "$target_file" "$begin" "$end" "$tmp"
     {
@@ -114,6 +102,7 @@ upsert_block_from_file() {
         printf '%s\n' "$end"
     } >> "$tmp"
     mv "$tmp" "$target_file"
+    log "updated $target_file"
 }
 
 install_vundle() {
@@ -167,35 +156,13 @@ apply_changes() {
     require_file "$BASH_ADDON"
     require_file "$VIM_PLUGIN_CONFIG"
 
-    local bash_block_file vim_block_file
-    bash_block_file="$(mktemp)"
-    vim_block_file="$(mktemp)"
-
-    cat > "$bash_block_file" <<EOF2
-if [ -f "$INSTALLED_BASH_ADDON" ]; then
-    . "$INSTALLED_BASH_ADDON"
-fi
-EOF2
-
-    cat > "$vim_block_file" <<EOF2
-if filereadable('$INSTALLED_VIM_PLUGIN_CONFIG')
-  execute 'source ' . fnameescape('$INSTALLED_VIM_PLUGIN_CONFIG')
-endif
-EOF2
-
-    if [ "$DRY_RUN" -eq 1 ]; then
-        install_managed_files
-        log "dry-run: would update $BASHRC and $VIMRC with managed blocks"
-    else
+    if [ "$DRY_RUN" -ne 1 ]; then
         backup_file "$BASHRC"
         backup_file "$VIMRC"
-        install_managed_files
-        upsert_block_from_file "$BASHRC" "$BASH_BEGIN" "$BASH_END" "$bash_block_file"
-        upsert_block_from_file "$VIMRC" "$VIM_BEGIN" "$VIM_END" "$vim_block_file"
-        log "managed blocks updated"
     fi
 
-    rm -f "$bash_block_file" "$vim_block_file"
+    upsert_block_from_file "$BASHRC" "$BASH_BEGIN" "$BASH_END" "$BASH_ADDON" ".bashrc"
+    upsert_block_from_file "$VIMRC" "$VIM_BEGIN" "$VIM_END" "$VIM_PLUGIN_CONFIG" ".vimrc"
 }
 
 run_plugin_install() {
@@ -221,10 +188,9 @@ main() {
     log "repo root: $REPO_ROOT"
     log "target bashrc: $BASHRC"
     log "target vimrc: $VIMRC"
-    log "managed files dir: $MANAGED_DIR"
 
     if [ "$AUTO_YES" -ne 1 ] && [ "$DRY_RUN" -ne 1 ]; then
-        printf 'Apply managed settings to ~/.bashrc and ~/.vimrc? [y/N] '
+        printf 'Append/update custom settings in ~/.bashrc and ~/.vimrc? [y/N] '
         read -r answer
         case "$answer" in
             y|Y|yes|YES) ;;
