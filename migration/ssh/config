@@ -1,3 +1,4 @@
+# >>> arching3-github-ssh >>>
 # SSH private keys are intentionally not stored in this repository.
 # Copy the private key through an encrypted, private channel, or create a new
 # key on the destination system and register only its public key with GitHub.
@@ -6,3 +7,4 @@ Host arching3.github.com
     User git
     IdentityFile ~/.ssh/id_rsa
     IdentitiesOnly yes
+# <<< arching3-github-ssh <<<
