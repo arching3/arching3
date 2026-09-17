@@ -13,6 +13,7 @@ set autoread
 set hidden
 set mouse=a
 set laststatus=2
+set statusline=%<%F%h%m%r%=%-14.(%l,%c%V%)\ %P
 set updatetime=300
 set signcolumn=yes
 
@@ -24,12 +25,32 @@ set autoindent
 set cindent
 set smartindent
 
+" Python completion
+let g:jedi#popup_select_first = 0
+let g:jedi#completions_enabled = 1
+let g:jedi#popup_on_dot = 0
+let g:jedi#completions_command = ""
+" Function/method signature help
+let g:jedi#show_call_signatures = "2"
+
+" Documentation
+let g:jedi#documentation_command = "K"
+
+" Navigation
+let g:jedi#goto_command = "<leader>d"
+let g:jedi#goto_assignments_command = "<leader>g"
+let g:jedi#usages_command = "<leader>u"
+let g:jedi#rename_command = "<leader>r"
+
 if has('termguicolors')
   set termguicolors
 endif
 set background=dark
 
 autocmd FileType make setlocal noexpandtab
+autocmd FileType python setlocal nocindent nosmartindent autoindent
+autocmd FileType python setlocal completeopt-=preview
+autocmd FileType python setlocal omnifunc=jedi#completions
 
 let mapleader = " "
 
@@ -43,6 +64,13 @@ function! InsertTabWrapper()
 endfunction
 
 inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+nnoremap <Tab> >>
+nnoremap <S-Tab> <<
+
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
+
+let g:polyglot_disabled = ['python']
 
 set rtp+=~/.vim/bundle/Vundle.vim
 if isdirectory(expand('~/.vim/bundle/Vundle.vim'))
@@ -53,6 +81,9 @@ if isdirectory(expand('~/.vim/bundle/Vundle.vim'))
 
   " ui and syntax
   Plugin 'sheerun/vim-polyglot'
+
+  " python completion and syntax
+  Plugin 'davidhalter/jedi-vim'
 
   " git workflow
   Plugin 'tpope/vim-fugitive'
@@ -83,3 +114,11 @@ if isdirectory(expand('~/.vim/pack/colors/start/everforest'))
 endif
 
 nnoremap <leader>n :NERDTreeToggle<CR>
+nnoremap K :LspHover<CR>
+nnoremap gd :LspDefinition<CR>
+nnoremap gr :LspReferences<CR>
+
+let g:python_highlight_all = 1
+let g:python_highlight_indent_errors = 1
+let g:python_highlight_space_errors = 1
+set synmaxcol=240
